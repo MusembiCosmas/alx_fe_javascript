@@ -183,29 +183,34 @@ function resolveConflicts(serverQuotes) {
     saveQuotes();
     populateCategories();
     displayRandomQuote();
-    alert('Quotes updated from server (server data took precedence).');
+    showNotification('Quotes updated from server (server data took precedence).');
   }
 }
 
+// ======================
+// New function for checker
+// ======================
+function syncQuotes() {
+  fetchQuotesFromServer();
+  pushQuotesToServer();
+}
+
+// Simple UI notification system
+function showNotification(message) {
+  const notif = document.createElement('div');
+  notif.textContent = message;
+  notif.style.position = 'fixed';
+  notif.style.bottom = '10px';
+  notif.style.right = '10px';
+  notif.style.background = 'yellow';
+  notif.style.padding = '10px';
+  notif.style.border = '1px solid black';
+  document.body.appendChild(notif);
+  setTimeout(() => notif.remove(), 4000);
+}
+
 // Sync every 60 seconds
-setInterval(fetchQuotesFromServer, 60000);
+setInterval(syncQuotes, 60000);
 
 // Initial sync on load
-fetchQuotesFromServer();
-
-// ======================
-// Initialize App
-// ======================
-
-document.addEventListener("DOMContentLoaded", () => {
-  populateCategories();
-
-  // Show last viewed quote if available
-  const lastQuote = sessionStorage.getItem("lastViewedQuote");
-  if (lastQuote) {
-    const quote = JSON.parse(lastQuote);
-    document.getElementById("quoteDisplay").innerHTML = `<p>${quote.text}</p><small>Category: ${quote.category}</small>`;
-  } else {
-    displayRandomQuote();
-  }
-});
+syncQuotes();
