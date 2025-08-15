@@ -183,7 +183,7 @@ function resolveConflicts(serverQuotes) {
     saveQuotes();
     populateCategories();
     displayRandomQuote();
-    showNotification('Quotes updated from server (server data took precedence).');
+    alert('Quotes updated from server (server data took precedence).');
   }
 }
 
@@ -193,20 +193,10 @@ function resolveConflicts(serverQuotes) {
 function syncQuotes() {
   fetchQuotesFromServer();
   pushQuotesToServer();
-}
-
-// Simple UI notification system
-function showNotification(message) {
-  const notif = document.createElement('div');
-  notif.textContent = message;
-  notif.style.position = 'fixed';
-  notif.style.bottom = '10px';
-  notif.style.right = '10px';
-  notif.style.background = 'yellow';
-  notif.style.padding = '10px';
-  notif.style.border = '1px solid black';
-  document.body.appendChild(notif);
-  setTimeout(() => notif.remove(), 4000);
+  console.log("Quotes synced with server!");
+  if (typeof showNotification === "function") {
+    showNotification("Quotes synced with server!");
+  }
 }
 
 // Sync every 60 seconds
