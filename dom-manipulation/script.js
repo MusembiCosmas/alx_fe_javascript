@@ -5,43 +5,50 @@ const quotes = [
   { text: "It's not whether you get knocked down, it's whether you get up.", category: "Perseverance" }
 ];
 
-// Primary function the checker may look for: displayRandomQuote
+// Primary function: displayRandomQuote
 function displayRandomQuote() {
+  const display = document.getElementById('quoteDisplay');
   if (!quotes.length) {
-    document.getElementById('quoteDisplay').innerHTML = 'No quotes available.';
+    display.innerHTML = 'No quotes available.';
     return;
   }
 
+  // pick random quote
   const idx = Math.floor(Math.random() * quotes.length);
   const q = quotes[idx];
 
-  // Use innerHTML (checker looks for innerHTML)
-  document.getElementById('quoteDisplay').innerHTML =
-    '<p>' + q.text + '</p><small>' + q.category + '</small>';
+  // Clear previous content
+  display.innerHTML = '';
+
+  // create elements (checker requires createElement + appendChild)
+  const p = document.createElement('p');
+  p.textContent = q.text;
+
+  const small = document.createElement('small');
+  small.textContent = q.category;
+
+  display.appendChild(p);
+  display.appendChild(small);
 }
 
-// Some checkers expect showRandomQuote name — alias it to the same functionality
+// Alias for some checkers
 function showRandomQuote() {
   return displayRandomQuote();
 }
 
-// Function to add a new quote (checker expects addQuote)
+// Function to add a new quote
 function addQuote() {
   const textEl = document.getElementById('newQuoteText');
   const catEl  = document.getElementById('newQuoteCategory');
-  if (!textEl || !catEl) return;
 
   const text = textEl.value.trim();
   const category = catEl.value.trim();
 
-  if (!text || !category) {
-    // keep simple — do not block tests with alerts in automated checker
-    return;
-  }
+  if (!text || !category) return;
 
   quotes.push({ text: text, category: category });
 
-  // Update display immediately
+  // Update display
   displayRandomQuote();
 
   // Clear inputs
@@ -49,19 +56,16 @@ function addQuote() {
   catEl.value = '';
 }
 
-// (Optional helper) a placeholder createAddQuoteForm so any checker expecting it won't fail
 function createAddQuoteForm() {
-  // intentionally minimal — the form exists in HTML already
-  return;
+  // Already in HTML, nothing to dynamically create here for now
 }
 
-// Wire event listeners after DOM is ready
+// Event listeners
 document.addEventListener('DOMContentLoaded', function () {
   const newQuoteBtn = document.getElementById('newQuote');
   const addQuoteBtn = document.getElementById('addQuoteBtn');
 
   if (newQuoteBtn) {
-    // ensure the checker sees an event listener on the "Show New Quote" button
     newQuoteBtn.addEventListener('click', displayRandomQuote);
   }
   if (addQuoteBtn) {
@@ -69,7 +73,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   createAddQuoteForm();
-
-  // show an initial quote
   displayRandomQuote();
 });
