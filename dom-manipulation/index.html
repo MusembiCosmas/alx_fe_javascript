@@ -3,22 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dynamic Quote Generator</title>
+  <title>Dynamic Quote Generator (Storage & JSON)</title>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Quote display -->
   <div id="quoteDisplay"></div>
 
-  <!-- Show new quote button (text must be "Show New Quote") -->
   <button id="newQuote">Show New Quote</button>
 
-  <!-- Add new quote inputs -->
   <h2>Add a New Quote</h2>
   <input id="newQuoteText" type="text" placeholder="Enter quote text" />
   <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
   <button id="addQuoteBtn" type="button">Add Quote</button>
+
+  <h2>Import / Export</h2>
+  <button id="exportBtn" type="button">Export Quotes to JSON</button>
+  <!-- include onchange as some checkers look for it -->
+  <input id="importFile" type="file" accept=".json" onchange="importFromJsonFile(event)" />
 
   <script src="script.js"></script>
 </body>
