@@ -2,32 +2,37 @@
 // Task 0: Dynamic Content Generator
 // ======================
 
-// Quotes array with objects
+// Initial quotes array with text and category
 let quotes = [
-  { text: "The journey of a thousand miles begins with one step.", category: "Motivation" },
+  { text: "The only way to do great work is to love what you do.", category: "Inspiration" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-  { text: "Get busy living or get busy dying.", category: "Inspiration" }
+  { text: "Get busy living or get busy dying.", category: "Motivation" }
 ];
 
 // Display a random quote
 function displayRandomQuote() {
-  const randomIndex = Math.floor(Math.random() * quotes.length);
   const quoteDisplay = document.getElementById("quoteDisplay");
-  if (quoteDisplay) {
-    quoteDisplay.textContent = `${quotes[randomIndex].text} - (${quotes[randomIndex].category})`;
-  }
-  sessionStorage.setItem("lastQuote", JSON.stringify(quotes[randomIndex]));
+  if (!quoteDisplay || quotes.length === 0) return;
+
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomIndex];
+  quoteDisplay.textContent = `"${randomQuote.text}" — ${randomQuote.category}`;
 }
 
-// Add a new quote
-function addQuote(text, category) {
-  quotes.push({ text, category });
-  saveQuotes();
-  populateCategories();
+// Alias function required for Task 0 checker
+function showRandomQuote() {
   displayRandomQuote();
 }
 
-// Required for Task 0 checker
+// Add a new quote to the array and update the DOM
+function addQuote(text, category) {
+  quotes.push({ text, category });
+  saveQuotes(); // from Task 1
+  populateCategories(); // from Task 2
+  displayRandomQuote();
+}
+
+// Required for Task 0 checker — Create form dynamically
 function createAddQuoteForm() {
   const form = document.createElement("form");
   form.id = "addQuoteForm";
@@ -63,6 +68,16 @@ function createAddQuoteForm() {
 
   document.body.appendChild(form);
 }
+
+// Event listener for "Show New Quote" button
+document.addEventListener("DOMContentLoaded", function() {
+  const btn = document.getElementById("newQuoteBtn");
+  if (btn) {
+    btn.addEventListener("click", showRandomQuote);
+  }
+  createAddQuoteForm();
+  displayRandomQuote();
+});
 
 // ======================
 // Task 1: Web Storage and JSON Handling
